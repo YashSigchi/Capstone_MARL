@@ -1,0 +1,28 @@
+actor:
+  activation: relu
+  hidden_sizes:
+  - 128
+  - 128
+agent_mapping:
+  0: C1
+  1: C2
+  2: C3
+algorithm: mappo
+clip_range: 0.2
+critic:
+  activation: relu
+  hidden_sizes:
+  - 256
+  - 256
+device: auto
+entropy_coef: 0.01
+gae_lambda: 0.95
+gamma: 0.99
+lr_actor: 0.0001
+lr_critic: 0.0001
+max_grad_norm: 0.5
+num_agents: 3
+num_epochs: 4
+num_minibatches: 4
+parameter_sharing: true
+value_coef: 0.5

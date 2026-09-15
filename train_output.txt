@@ -1,0 +1,14 @@
+Starting training for 50 episodes...
+Episode 1/50  Reward: -10.65  Policy Loss: -0.0170  Value Loss: 0.4221
+Episode 10/50  Reward: -10.17  Policy Loss: 0.0154  Value Loss: 0.2709
+  [Eval] Reward: -0.04 | Comp Rate: 29.1% | Rej: 23 | Score: -474.96
+Episode 20/50  Reward: -10.24  Policy Loss: -0.0143  Value Loss: 0.5141
+  [Eval] Reward: -0.04 | Comp Rate: 25.7% | Rej: 0 | Score: -541.14
+Episode 30/50  Reward: -10.75  Policy Loss: -0.0201  Value Loss: 0.5844
+  [Eval] Reward: -0.04 | Comp Rate: 25.7% | Rej: 0 | Score: -541.14
+Episode 40/50  Reward: -10.17  Policy Loss: -0.0349  Value Loss: 0.5507
+  [Eval] Reward: -0.04 | Comp Rate: 29.1% | Rej: 23 | Score: -474.96
+Episode 50/50  Reward: -11.62  Policy Loss: -0.0278  Value Loss: 0.4999
+  [Eval] Reward: -0.03 | Comp Rate: 29.7% | Rej: 24 | Score: -445.86
+Training finished.
+Final Episode Reward: -11.62

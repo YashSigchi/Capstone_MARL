@@ -1,0 +1,48 @@
+Loading checkpoint from checkpoints/best_model.pt...
+Running evaluation for 10 episodes...
+
+=== Evaluation Metrics ===
+makespan_mean                           197.400000
+makespan_std                              2.118700
+avg_task_latency_mean                    32.330614
+avg_task_latency_std                      3.838991
+p95_latency_mean                         69.020000
+p95_latency_std                          12.237742
+p99_latency_mean                         86.475000
+p99_latency_std                          14.398249
+avg_queue_waiting_time_mean               2.135691
+avg_queue_waiting_time_std                1.806318
+throughput_mean                           0.182000
+throughput_std                            0.016700
+avg_cpu_utilization_mean                  0.224582
+avg_cpu_utilization_std                   0.012615
+avg_memory_utilization_mean               0.224582
+avg_memory_utilization_std                0.012615
+resource_imbalance_mean                   0.213246
+resource_imbalance_std                    0.009513
+total_energy_mean                    269527.438527
+total_energy_std                      27632.166382
+total_carbon_mean                         0.037434
+total_carbon_std                          0.003838
+completed_tasks_mean                     36.400000
+completed_tasks_std                       3.339993
+unfinished_tasks_mean                     6.200000
+unfinished_tasks_std                      1.549193
+energy_per_completed_task_mean         7426.161727
+energy_per_completed_task_std           678.762723
+carbon_per_completed_task_mean            0.001031
+carbon_per_completed_task_std             0.000094
+sla_violation_rate_mean                   0.493716
+sla_violation_rate_std                    0.069834
+high_priority_sla_violations_mean         6.700000
+high_priority_sla_violations_std          2.263233
+avg_deadline_slack_mean                  -3.408490
+avg_deadline_slack_std                    4.335971
+task_completion_rate_mean                 0.388571
+task_completion_rate_std                  0.038105
+task_rejection_rate_mean                  0.545280
+task_rejection_rate_std                   0.038945
+total_reward_mean                       -16.681979
+total_reward_std                          2.918842
+
+Results saved to eval_results.json

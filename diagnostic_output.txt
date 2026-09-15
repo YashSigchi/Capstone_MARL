@@ -1,0 +1,80 @@
+Starting training for 50 episodes...
+Episode 1/50  Reward: 1.57  Policy Loss: 0.0121  Value Loss: 2.5488
+Episode 10/50  Reward: -8.05  Policy Loss: 0.0056  Value Loss: 2.4145
+  [Eval] Reward: -67854.01 | Comp Rate: 0.8% | Rej: 0 | Score: -595.58
+Episode 20/50  Reward: 3.37  Policy Loss: 0.0061  Value Loss: 1.1233
+  [Eval] Reward: -121795.87 | Comp Rate: 2.6% | Rej: 0 | Score: -712.26
+Episode 30/50  Reward: 2.17  Policy Loss: 0.0027  Value Loss: 1.0727
+  [Eval] Reward: -121795.87 | Comp Rate: 2.6% | Rej: 0 | Score: -712.26
+Episode 40/50  Reward: 6.71  Policy Loss: -0.0013  Value Loss: 0.8105
+  [Eval] Reward: -121796.12 | Comp Rate: 1.8% | Rej: 0 | Score: -719.02
+Episode 50/50  Reward: 0.41  Policy Loss: 0.0040  Value Loss: 0.6471
+  [Eval] Reward: -121796.15 | Comp Rate: 2.4% | Rej: 0 | Score: -729.65
+Training finished.
+Final Episode Reward: 0.41
+Loading checkpoint from checkpoints/best_model.pt...
+Running evaluation for 10 episodes...
+
+=== Evaluation Metrics ===
+makespan_mean                        1.590000e+02
+makespan_std                         0.000000e+00
+avg_task_latency_mean                1.126667e+02
+avg_task_latency_std                 0.000000e+00
+p95_latency_mean                     1.521000e+02
+p95_latency_std                      2.995911e-14
+p99_latency_mean                     1.568200e+02
+p99_latency_std                      0.000000e+00
+avg_queue_waiting_time_mean          6.000000e+01
+avg_queue_waiting_time_std           0.000000e+00
+throughput_mean                      1.500000e-02
+throughput_std                       3.657118e-18
+avg_cpu_utilization_mean             0.000000e+00
+avg_cpu_utilization_std              0.000000e+00
+avg_memory_utilization_mean          0.000000e+00
+avg_memory_utilization_std           0.000000e+00
+resource_imbalance_mean              0.000000e+00
+resource_imbalance_std               0.000000e+00
+total_energy_mean                    3.922919e+04
+total_energy_std                     0.000000e+00
+total_carbon_mean                    5.448499e-03
+total_carbon_std                     0.000000e+00
+completed_tasks_mean                 3.000000e+00
+completed_tasks_std                  0.000000e+00
+unfinished_tasks_mean                9.700000e+01
+unfinished_tasks_std                 0.000000e+00
+energy_per_completed_task_mean       1.307640e+04
+energy_per_completed_task_std        0.000000e+00
+carbon_per_completed_task_mean       1.816166e-03
+carbon_per_completed_task_std        0.000000e+00
+sla_violation_rate_mean              1.000000e+00
+sla_violation_rate_std               0.000000e+00
+high_priority_sla_violations_mean    2.000000e+00
+high_priority_sla_violations_std     0.000000e+00
+avg_deadline_slack_mean             -8.351190e+01
+avg_deadline_slack_std               1.497956e-14
+task_completion_rate_mean            3.000000e-02
+task_completion_rate_std             7.314236e-18
+task_rejection_rate_mean             0.000000e+00
+task_rejection_rate_std              0.000000e+00
+total_reward_mean                    1.382719e+00
+total_reward_std                     7.031008e-01
+
+Results saved to eval_results.json
+Running baseline: fcfs for 10 episodes...
+Running baseline: round_robin for 10 episodes...
+Running baseline: met for 10 episodes...
+Running baseline: random_feasible for 10 episodes...
+
+=== Baseline Comparison ===
+                 makespan_mean  makespan_std  avg_task_latency_mean  avg_task_latency_std  p95_latency_mean  p95_latency_std  p99_latency_mean  p99_latency_std  avg_queue_waiting_time_mean  avg_queue_waiting_time_std  throughput_mean  throughput_std  avg_cpu_utilization_mean  avg_cpu_utilization_std  avg_memory_utilization_mean  avg_memory_utilization_std  resource_imbalance_mean  resource_imbalance_std  total_energy_mean  total_energy_std  total_carbon_mean  total_carbon_std  completed_tasks_mean  completed_tasks_std  unfinished_tasks_mean  unfinished_tasks_std  energy_per_completed_task_mean  energy_per_completed_task_std  carbon_per_completed_task_mean  carbon_per_completed_task_std  sla_violation_rate_mean  sla_violation_rate_std  high_priority_sla_violations_mean  high_priority_sla_violations_std  avg_deadline_slack_mean  avg_deadline_slack_std  task_completion_rate_mean  task_completion_rate_std  task_rejection_rate_mean  task_rejection_rate_std  total_reward_mean  total_reward_std
+fcfs                     130.0      0.000000              49.571429              0.000000           111.300         0.000000           125.460         0.000000                    16.857143                    0.000000         0.035000    7.314236e-18                       0.0                      0.0                 0.000000e+00                0.000000e+00             0.000000e+00            0.000000e+00       56669.468765      7.669533e-12           0.007871          0.000000                   7.0              0.00000                   93.0                   0.0                     8095.638395                   9.586916e-13                        0.001124                       0.000000                 0.714286                0.000000                                3.0                          0.000000               -20.693284                0.000000                      0.070              1.462847e-17                     0.000                 0.000000          -2.081726          7.871921
+round_robin              130.0      0.000000              49.571429              0.000000           111.300         0.000000           125.460         0.000000                    16.857143                    0.000000         0.035000    7.314236e-18                       0.0                      0.0                 0.000000e+00                0.000000e+00             0.000000e+00            0.000000e+00       56669.468765      7.669533e-12           0.007871          0.000000                   7.0              0.00000                   93.0                   0.0                     8095.638395                   9.586916e-13                        0.001124                       0.000000                 0.714286                0.000000                                3.0                          0.000000               -20.693284                0.000000                      0.070              1.462847e-17                     0.000                 0.000000           1.776807          0.110818
+met                      130.0      0.000000              49.571429              0.000000           111.300         0.000000           125.460         0.000000                    16.857143                    0.000000         0.035000    7.314236e-18                       0.0                      0.0                 0.000000e+00                0.000000e+00             0.000000e+00            0.000000e+00       56669.468765      7.669533e-12           0.007871          0.000000                   7.0              0.00000                   93.0                   0.0                     8095.638395                   9.586916e-13                        0.001124                       0.000000                 0.714286                0.000000                                3.0                          0.000000               -20.693284                0.000000                      0.070              1.462847e-17                     0.000                 0.000000           1.994476          0.037748
+random_feasible          164.1     21.252189              39.669962              4.836014            73.315         8.547581            78.823        10.210694                     5.072762                    2.283588         0.061948    9.998163e-03                       0.0                      0.0                 3.700743e-18                6.468954e-18             2.758371e-18            4.821674e-18       86042.484322      1.590399e+04           0.011950          0.002209                  10.1              1.72884                    0.0                   0.0                     8551.101059                   9.643583e+02                        0.001188                       0.000134                 0.631510                0.132432                                4.0                          1.247219                -8.090530                6.242369                      0.101              1.728840e-02                     0.899                 0.017288         -25.557527         20.539070
+
+Comparison saved to baseline_comparison.csv
+--- Running Training ---
+
+--- Running Evaluation ---
+
+--- Running Baselines ---

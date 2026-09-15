@@ -1,0 +1,21 @@
+{
+  "training_episode": 330,
+  "validation_seeds": [
+    1001,
+    1002,
+    1003,
+    1004,
+    1005
+  ],
+  "selection_score": -412.0769632219157,
+  "metrics": {
+    "eval_reward": -0.03306856984584041,
+    "task_completion_rate": 0.3192754268841225,
+    "sla_violation_rate": 0.4458500323206206,
+    "latency": 7.346110605061978,
+    "energy_per_completed_task": 6867.673868739761,
+    "rejected_tasks": 22.6,
+    "completed_tasks": 14.0,
+    "unfinished_tasks": 7.4
+  }
+}

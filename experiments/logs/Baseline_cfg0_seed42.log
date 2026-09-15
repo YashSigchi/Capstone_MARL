@@ -1,0 +1,34 @@
+Starting training for 150 episodes...
+Episode 1/150  Reward: -8.46  Policy Loss: -0.0149  Value Loss: 0.4172
+Episode 10/150  Reward: -12.31  Policy Loss: -0.0070  Value Loss: 0.7144
+  [Eval] Reward: -0.03 | Comp Rate: 31.0% | Rej: 23 | Score: -413.95
+Episode 20/150  Reward: -9.43  Policy Loss: -0.0099  Value Loss: 0.4700
+  [Eval] Reward: -0.04 | Comp Rate: 25.7% | Rej: 0 | Score: -541.14
+Episode 30/150  Reward: -10.37  Policy Loss: -0.0230  Value Loss: 0.5707
+  [Eval] Reward: -0.04 | Comp Rate: 25.7% | Rej: 0 | Score: -541.14
+Episode 40/150  Reward: -10.17  Policy Loss: -0.0373  Value Loss: 0.5501
+  [Eval] Reward: -0.04 | Comp Rate: 29.1% | Rej: 23 | Score: -474.96
+Episode 50/150  Reward: -9.97  Policy Loss: -0.0320  Value Loss: 0.4836
+  [Eval] Reward: -0.04 | Comp Rate: 31.5% | Rej: 23 | Score: -419.73
+Episode 60/150  Reward: -10.93  Policy Loss: -0.0310  Value Loss: 0.5886
+  [Eval] Reward: -0.03 | Comp Rate: 31.0% | Rej: 23 | Score: -413.95
+Episode 70/150  Reward: -5.85  Policy Loss: -0.0211  Value Loss: 0.2389
+  [Eval] Reward: -0.03 | Comp Rate: 29.9% | Rej: 23 | Score: -438.70
+Episode 80/150  Reward: -11.02  Policy Loss: -0.0315  Value Loss: 0.5812
+  [Eval] Reward: -0.03 | Comp Rate: 30.7% | Rej: 21 | Score: -387.40
+Episode 90/150  Reward: -12.78  Policy Loss: -0.0336  Value Loss: 0.7659
+  [Eval] Reward: -0.04 | Comp Rate: 29.6% | Rej: 14 | Score: -416.84
+Episode 100/150  Reward: -8.49  Policy Loss: -0.0273  Value Loss: 0.4219
+  [Eval] Reward: -0.03 | Comp Rate: 30.0% | Rej: 23 | Score: -449.81
+Episode 110/150  Reward: -11.02  Policy Loss: -0.0344  Value Loss: 0.5963
+  [Eval] Reward: -0.03 | Comp Rate: 31.0% | Rej: 23 | Score: -413.95
+Episode 120/150  Reward: -12.35  Policy Loss: -0.0343  Value Loss: 0.6193
+  [Eval] Reward: -0.03 | Comp Rate: 31.0% | Rej: 23 | Score: -413.95
+Episode 130/150  Reward: -8.51  Policy Loss: -0.0386  Value Loss: 0.4862
+  [Eval] Reward: -0.04 | Comp Rate: 27.5% | Rej: 0 | Score: -423.64
+Episode 140/150  Reward: -8.66  Policy Loss: 0.0094  Value Loss: 0.4669
+  [Eval] Reward: -0.04 | Comp Rate: 29.1% | Rej: 23 | Score: -474.96
+Episode 150/150  Reward: -10.10  Policy Loss: -0.0303  Value Loss: 0.5601
+  [Eval] Reward: -0.03 | Comp Rate: 31.0% | Rej: 23 | Score: -413.95
+Training finished.
+Final Episode Reward: -10.10
