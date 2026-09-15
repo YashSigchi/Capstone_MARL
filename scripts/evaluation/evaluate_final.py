@@ -21,7 +21,7 @@ for seed in seeds:
         # Run MAPPO eval
         cmd = [
             "/Library/Frameworks/Python.framework/Versions/3.11/bin/python3.11", 
-            "scripts/evaluate.py", 
+            "scripts/evaluation/evaluate.py", 
             "--config", "configs/experiment.yaml", 
             "--checkpoint", chk_path,
             "--episodes", "10",
@@ -38,7 +38,7 @@ for seed in seeds:
 for t_seed in test_seeds:
     cmd = [
         "/Library/Frameworks/Python.framework/Versions/3.11/bin/python3.11", 
-        "scripts/run_baselines.py", 
+        "scripts/evaluation/run_baselines.py", 
         "--config", "configs/experiment.yaml", 
         "--episodes", "10",
         "--seed", str(t_seed)

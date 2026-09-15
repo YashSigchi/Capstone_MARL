@@ -13,8 +13,8 @@
 
 ## [0.2.0] - Hyperparameter Tuning & Network Fix
 ### Added
-- Extensive automated hyperparameter tuning suite in `hyperparameter_tuner.py`.
-- Parallelized final training script `run_final_parallel.py`.
+- Extensive automated hyperparameter tuning suite in `scripts/tuning/hyperparameter_tuner.py`.
+- Parallelized final training script `scripts/training/train_parallel.py`.
 ### Changed
 - Modified default MARL configuration: LR=1e-3, Entropy=0.001 based on sweeping.
 - Changed environment topology from `grid` to `fully_connected` to resolve infinite latency penalties on non-adjacent node data transfers.

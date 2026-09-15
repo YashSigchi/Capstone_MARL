@@ -24,7 +24,7 @@ for load_name, params in loads.items():
         yaml.dump(env_cfg, f)
         
     print(f"\n=== {load_name} LOAD ===")
-    subprocess.run(["/Library/Frameworks/Python.framework/Versions/3.11/bin/python3.11", "scripts/run_baselines.py", "--config", "configs/experiment.yaml", "--episodes", "5"], check=True)
+    subprocess.run(["/Library/Frameworks/Python.framework/Versions/3.11/bin/python3.11", "scripts/evaluation/run_baselines.py", "--config", "configs/experiment.yaml", "--episodes", "5"], check=True)
 
 # Restore
 with open('configs/environment.yaml', 'w') as f:

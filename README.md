@@ -115,13 +115,13 @@ pip install -r requirements.txt
 ## 16. Training
 Run training using the provided script:
 ```bash
-python scripts/train.py --config configs/experiment.yaml
+python scripts/training/train.py --config configs/experiment.yaml
 ```
 
 ## 17. Evaluation
 Evaluate a trained checkpoint:
 ```bash
-python scripts/evaluate.py --checkpoint path/to/checkpoint.pt
+python scripts/evaluation/evaluate.py --checkpoint path/to/checkpoint.pt
 ```
 
 ## 18. Baselines

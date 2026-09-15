@@ -35,7 +35,7 @@ for seed in seeds:
         
     cmd = [
         "/Library/Frameworks/Python.framework/Versions/3.11/bin/python3.11", 
-        "scripts/train.py", 
+        "scripts/training/train.py", 
         "--config", exp_cfg_path, 
         "--num-episodes", "500",
         "--checkpoint-dir", chk_dir

@@ -45,7 +45,7 @@ def run_experiment(run_id, overrides, num_episodes, seeds):
             
         cmd = [
             "/Library/Frameworks/Python.framework/Versions/3.11/bin/python3.11", 
-            "scripts/train.py", 
+            "scripts/training/train.py", 
             "--config", "configs/experiment.yaml", 
             "--num-episodes", str(num_episodes)
         ]

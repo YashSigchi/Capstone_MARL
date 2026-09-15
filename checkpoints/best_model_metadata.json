@@ -1,5 +1,5 @@
 {
-  "training_episode": 330,
+  "training_episode": 520,
   "validation_seeds": [
     1001,
     1002,
@@ -7,15 +7,15 @@
     1004,
     1005
   ],
-  "selection_score": -412.0769632219157,
+  "selection_score": -393.2220629276434,
   "metrics": {
-    "eval_reward": -0.03306856984584041,
-    "task_completion_rate": 0.3192754268841225,
-    "sla_violation_rate": 0.4458500323206206,
+    "eval_reward": -0.03463767694139454,
+    "task_completion_rate": 0.3157039983126939,
+    "sla_violation_rate": 0.4345054945054946,
     "latency": 7.346110605061978,
-    "energy_per_completed_task": 6867.673868739761,
-    "rejected_tasks": 22.6,
-    "completed_tasks": 14.0,
-    "unfinished_tasks": 7.4
+    "energy_per_completed_task": 6654.755117897877,
+    "rejected_tasks": 22.4,
+    "completed_tasks": 13.8,
+    "unfinished_tasks": 7.8
   }
 }

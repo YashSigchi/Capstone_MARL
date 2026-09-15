@@ -43,10 +43,10 @@ with open('configs/experiment.yaml', 'w') as f:
     yaml.dump(exp_cfg, f)
 
 print("--- Running Training ---")
-subprocess.run(["/Library/Frameworks/Python.framework/Versions/3.11/bin/python3.11", "scripts/train.py", "--config", "configs/experiment.yaml", "--num-episodes", "50"], check=True)
+subprocess.run(["/Library/Frameworks/Python.framework/Versions/3.11/bin/python3.11", "scripts/training/train.py", "--config", "configs/experiment.yaml", "--num-episodes", "50"], check=True)
 
 print("\n--- Running Evaluation ---")
-subprocess.run(["/Library/Frameworks/Python.framework/Versions/3.11/bin/python3.11", "scripts/evaluate.py", "--config", "configs/experiment.yaml", "--checkpoint", "checkpoints/best_model.pt", "--episodes", "10"], check=True)
+subprocess.run(["/Library/Frameworks/Python.framework/Versions/3.11/bin/python3.11", "scripts/evaluation/evaluate.py", "--config", "configs/experiment.yaml", "--checkpoint", "checkpoints/best_model.pt", "--episodes", "10"], check=True)
 
 print("\n--- Running Baselines ---")
-subprocess.run(["/Library/Frameworks/Python.framework/Versions/3.11/bin/python3.11", "scripts/run_baselines.py", "--config", "configs/experiment.yaml", "--episodes", "10"], check=True)
+subprocess.run(["/Library/Frameworks/Python.framework/Versions/3.11/bin/python3.11", "scripts/evaluation/run_baselines.py", "--config", "configs/experiment.yaml", "--episodes", "10"], check=True)
