@@ -36,7 +36,9 @@ def test_load_balance_imbalanced(small_config):
         assert val < 0.0
 
 def test_sla_violation_penalty(small_config):
-    info = {'sla_violated': True, 'task_priority': 5}
+    from marl.environment.task import TaskRepresentation
+    dummy_task = TaskRepresentation('t1',1,1,1,1,1,1,1,1,[],1,'gold')
+    info = {'sla_violated': True, 'task_priority': 5, 'allocated_task': dummy_task}
     if 'sla' in REWARD_COMPONENTS:
         val = REWARD_COMPONENTS['sla']['fn'](info)
         assert val < 0.0
@@ -98,7 +100,23 @@ def test_action_penalty_deferred(small_config):
         assert val == -0.1
 
 def test_action_penalty_reject(small_config):
-    info = {'action_was_reject': True}
+    # We no longer strictly penalize reject in action penalty; we penalize defer if feasible
+    info = {'action_was_defer': True, 'feasible_count': 1}
     if 'action_penalty' in REWARD_COMPONENTS:
         val = REWARD_COMPONENTS['action_penalty']['fn'](info)
         assert val == -1.0
+
+def test_admission_reward(small_config):
+    # Test valid under quota
+    info_ok = {'rejection_enabled': True, 'current_rejection_rate': 0.1, 'target_rejection_rate': 0.2, 'action_was_reject': True, 'admission_base_penalty': 5.0, 'admission_excess_penalty_scale': 10.0}
+    val_ok = REWARD_COMPONENTS['admission']['fn'](info_ok)
+    # base penalty for 0.1 rate = 5.0 * 0.1 = 0.5 -> -0.5
+    assert abs(val_ok - (-0.5)) < 1e-5
+    
+    # Test over quota
+    info_bad = {'rejection_enabled': True, 'current_rejection_rate': 0.5, 'target_rejection_rate': 0.2, 'action_was_reject': True, 'admission_base_penalty': 5.0, 'admission_excess_penalty_scale': 10.0}
+    val_bad = REWARD_COMPONENTS['admission']['fn'](info_bad)
+    # base = 5.0 * 0.5 = 2.5
+    # excess = 0.3 * 10.0 = 3.0
+    # total = -5.5 -> clipped to -5.0
+    assert abs(val_bad - (-5.0)) < 1e-5

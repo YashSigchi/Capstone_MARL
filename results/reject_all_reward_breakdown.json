@@ -1,0 +1,21 @@
+{
+  "policy": "REJECT",
+  "episode_reward": -9.294084707041305,
+  "completed": 0,
+  "rejected": 80,
+  "unfinished": 20,
+  "components": {
+    "action_penalty": -20.000000000000014,
+    "admission": -81.88169414082599,
+    "sla": -80.0,
+    "latency": 0.0,
+    "queue": -3.999999999999994,
+    "energy": 0.0,
+    "utilization": 0.0,
+    "load_balance": 0.0,
+    "throughput": 0.0
+  },
+  "defers": 3,
+  "allocs": 0,
+  "steps": 200
+}

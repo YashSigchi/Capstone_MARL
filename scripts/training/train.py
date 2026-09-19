@@ -72,6 +72,19 @@ def main():
         
     seed = config.get('seed', 42)
     set_all_seeds(seed)
+
+    # ---------------------------------------------------------
+    # PRINT RESOLVED CONFIGURATIONS (PHASE B)
+    # ---------------------------------------------------------
+    print("\n" + "="*50)
+    from marl.utils.config import print_resolved_config
+    print_resolved_config(config)
+    
+    import os, yaml
+    os.makedirs('results', exist_ok=True)
+    with open('results/resolved_config.yaml', 'w') as f:
+        yaml.dump(config, f)
+
     
     # Create env
     env = MARLResourceAllocationEnv(config)

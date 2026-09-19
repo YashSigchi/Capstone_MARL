@@ -198,3 +198,45 @@ marl-resource-allocation/
 - [ ] Connect fully with the finalized GNN workload model.
 - [ ] Introduce dynamic agent-to-cluster reassignment.
 - [ ] Add hierarchical action spaces for massive clusters.
+
+## Main Commands
+
+**Install Dependencies:**
+```bash
+pip install -r requirements.txt
+```
+
+**Run Tests:**
+```bash
+pytest tests/
+```
+
+**Training:**
+```bash
+python scripts/training/train.py --config configs/experiment.yaml
+```
+
+**Evaluation:**
+```bash
+python scripts/evaluation/evaluate.py --config configs/experiment.yaml --checkpoint checkpoints/best_model.pt
+```
+
+**Run Baselines:**
+```bash
+python scripts/evaluation/run_baselines.py --config configs/experiment.yaml
+```
+
+**Hyperparameter Tuning:**
+```bash
+python scripts/tuning/run_hparam_sweep.py
+```
+
+**Diagnostics:**
+```bash
+python scripts/diagnostics/run_diagnostics.py
+```
+
+**Run Full Experiments Pipeline:**
+```bash
+./scripts/experiments/run_all_tuning.sh
+```

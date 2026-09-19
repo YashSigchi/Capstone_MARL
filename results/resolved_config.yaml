@@ -1,0 +1,220 @@
+actor:
+  activation: relu
+  hidden_sizes:
+  - 128
+  - 128
+agent_mapping:
+  0: C1
+  1: C2
+  2: C3
+algorithm: mappo
+baselines:
+- fcfs
+- round_robin
+- sjf
+- random_feasible
+carbon_intensity: 0.5
+checkpoint_dir: checkpoints
+clip_range: 0.2
+clusters:
+- id: C1
+  resource_ids:
+  - R1
+  - R2
+- id: C2
+  resource_ids:
+  - R3
+  - R4
+- id: C3
+  resource_ids:
+  - R5
+  - R6
+communication: false
+critic:
+  activation: relu
+  hidden_sizes:
+  - 256
+  - 256
+device: auto
+dqn:
+  batch_size: 64
+  epsilon_decay: 0.995
+  epsilon_end: 0.05
+  epsilon_start: 1.0
+  gamma: 0.99
+  hidden_sizes:
+  - 256
+  - 256
+  lr: 0.001
+  num_episodes: 500
+  replay_buffer_size: 100000
+  target_update_freq: 100
+dynamic_rewards: false
+dynamic_weights:
+  constraints:
+    action_penalty:
+      max: 0.5
+      min: 0.0
+    admission:
+      max: 0.5
+      min: 0.0
+    energy:
+      max: 0.3
+      min: 0.0
+    latency:
+      max: 0.4
+      min: 0.05
+    load_balance:
+      max: 0.25
+      min: 0.0
+    queue:
+      max: 0.25
+      min: 0.0
+    sla:
+      max: 0.5
+      min: 0.1
+    throughput:
+      max: 0.2
+      min: 0.0
+    utilization:
+      max: 0.3
+      min: 0.0
+  dynamic_thresholds:
+    high_energy_ratio: 0.8
+    high_sla_violation_rate: 0.1
+    high_utilization: 0.85
+  mode: fixed
+entropy_coef: 0.001
+environment_config: environment.yaml
+episode_length: 200
+eval_episodes: 10
+eval_interval: 50
+experiment_name: marl_resource_allocation
+gae_lambda: 0.95
+gamma: 0.99
+idle_power_fraction: 0.3
+invalid_action_penalty: -1.0
+log_dir: logs/
+lr_actor: 0.001
+lr_critic: 0.001
+marl_config: marl.yaml
+max_grad_norm: 0.5
+max_steps: 200
+max_tasks_per_episode: 100
+normalization: none
+num_agents: 3
+num_episodes: 1000
+num_epochs: 4
+num_minibatches: 4
+num_resources: 6
+parameter_sharing: true
+queue_ordering: fifo
+rejection:
+  enabled: true
+  max_rejection_rate: 0.2
+resources:
+- cpu_capacity: 16
+  gpu_capacity: 1
+  id: R1
+  memory_capacity: 32
+  network_bandwidth: 10.0
+  power_rate: 250
+  processing_speed: 1.0
+- cpu_capacity: 16
+  gpu_capacity: 1
+  id: R2
+  memory_capacity: 32
+  network_bandwidth: 10.0
+  power_rate: 250
+  processing_speed: 2.0
+- cpu_capacity: 16
+  gpu_capacity: 1
+  id: R3
+  memory_capacity: 32
+  network_bandwidth: 10.0
+  power_rate: 250
+  processing_speed: 1.0
+- cpu_capacity: 16
+  gpu_capacity: 1
+  id: R4
+  memory_capacity: 32
+  network_bandwidth: 10.0
+  power_rate: 250
+  processing_speed: 2.0
+- cpu_capacity: 16
+  gpu_capacity: 1
+  id: R5
+  memory_capacity: 32
+  network_bandwidth: 10.0
+  power_rate: 250
+  processing_speed: 1.0
+- cpu_capacity: 16
+  gpu_capacity: 1
+  id: R6
+  memory_capacity: 32
+  network_bandwidth: 10.0
+  power_rate: 250
+  processing_speed: 2.0
+results_dir: results/
+reward:
+  admission:
+    base_penalty: 5.0
+    excess_penalty_scale: 10.0
+    target_rejection_rate: 0.2
+reward_blend_alpha: 0.5
+reward_config: reward.yaml
+save_interval: 20
+seed: 42
+steps_per_episode: 100
+task_arrival:
+  model: poisson
+  rate: 0.5
+task_distributions:
+  communication_req:
+    max: 1.0
+    min: 0.0
+  cpu_req:
+    max: 8.0
+    min: 1.0
+  data_size:
+    max: 100.0
+    min: 1.0
+  deadline:
+    max: 50.0
+    min: 10.0
+  gpu_req:
+    max: 0.0
+    min: 0.0
+  memory_req:
+    max: 32.0
+    min: 1.0
+  priority:
+    max: 5
+    min: 1
+  sla_class_weights:
+  - 0.2
+  - 0.5
+  - 0.3
+  sla_classes:
+  - gold
+  - silver
+  - bronze
+  work_units:
+    max: 100.0
+    min: 5.0
+topology:
+  default_bandwidth: 10.0
+  default_latency: 1.0
+  type: fully_connected
+use_tensorboard: false
+value_coef: 0.5
+weights:
+  action_penalty: 0.1
+  admission: 0.1
+  energy: 0.15
+  latency: 0.15
+  load_balance: 0.1
+  queue: 0.1
+  sla: 0.1
+  throughput: 0.05
+  utilization: 0.15

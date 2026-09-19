@@ -1,0 +1,70 @@
+
+==================================================
+FINAL RESOLVED EVALUATION CONFIGURATION
+==================================================
+rejection.enabled: True
+rejection.max_rejection_rate: 0.2
+reward.admission.target_rejection_rate: 0.2
+reward.admission.base_penalty: 5.0
+reward.admission.excess_penalty_scale: 10.0
+MAPPO config keys: ['activation', 'hidden_sizes']
+==================================================
+
+Loading checkpoint from checkpoints/best_model.pt...
+
+--- Loading checkpoint from checkpoints/best_model.pt ---
+episode = 970
+training_seed = 42
+max_rejection_rate = 0.2
+target_rejection_rate = 0.2
+validation_completion = 0.0
+validation_rejection = 0.0
+---------------------------------------
+
+Running evaluation for 10 episodes...
+
+=== Evaluation Metrics ===
+makespan_mean                           195.600000
+makespan_std                              3.373096
+avg_task_latency_mean                    58.612709
+avg_task_latency_std                      6.390754
+p95_latency_mean                        107.130000
+p95_latency_std                          13.770201
+p99_latency_mean                        115.404000
+p99_latency_std                          15.203940
+avg_queue_waiting_time_mean              24.285745
+avg_queue_waiting_time_std                6.008763
+throughput_mean                           0.151500
+throughput_std                            0.022367
+avg_cpu_utilization_mean                  0.277223
+avg_cpu_utilization_std                   0.034846
+avg_memory_utilization_mean               0.420163
+avg_memory_utilization_std                0.031667
+resource_imbalance_mean                   0.206356
+resource_imbalance_std                    0.012446
+total_energy_mean                    255407.806225
+total_energy_std                      36267.900491
+total_carbon_mean                         0.035473
+total_carbon_std                          0.005037
+completed_tasks_mean                     30.300000
+completed_tasks_std                       4.473378
+unfinished_tasks_mean                    44.700000
+unfinished_tasks_std                      6.447222
+energy_per_completed_task_mean         8453.990355
+energy_per_completed_task_std           629.937964
+carbon_per_completed_task_mean            0.001174
+carbon_per_completed_task_std             0.000087
+sla_violation_rate_mean                   0.769959
+sla_violation_rate_std                    0.059590
+high_priority_sla_violations_mean         9.200000
+high_priority_sla_violations_std          2.485514
+avg_deadline_slack_mean                 -28.750449
+avg_deadline_slack_std                    5.297302
+task_completion_rate_mean                 0.324212
+task_completion_rate_std                  0.053254
+task_rejection_rate_mean                  0.200448
+task_rejection_rate_std                   0.003274
+total_reward_mean                       -40.605877
+total_reward_std                          2.949950
+
+Results saved to eval_results.json

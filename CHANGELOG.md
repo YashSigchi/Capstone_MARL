@@ -18,3 +18,12 @@
 ### Changed
 - Modified default MARL configuration: LR=1e-3, Entropy=0.001 based on sweeping.
 - Changed environment topology from `grid` to `fully_connected` to resolve infinite latency penalties on non-adjacent node data transfers.
+
+### Fixed
+- Fixed critical checkpoint discrepancy where `evaluate.py` loaded `max_rejection_rate=1.0` while validation used `0.2`.
+- Fixed missing `metadata.json` injection in `MAPPO` checkpoints.
+- Fixed `AttributeError` caused by missing normalizer dictionary initialization.
+
+### Added
+- Added mandatory config resolution printing at runtime in `train.py` and `evaluate.py`.
+- Finalized Phase 5 Controlled Recovery Audit resulting in `GO` state.

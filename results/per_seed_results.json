@@ -1,0 +1,143 @@
+{
+  "42": [
+    {
+      "train_seed": 42,
+      "valid_seed": 1001,
+      "completion_rate": 0.3695652173913043,
+      "rejection_rate": 0.1956521739130435,
+      "throughput": 0.17,
+      "avg_latency": 44.88235294117647,
+      "sla_violation_rate": 0.6470588235294118
+    },
+    {
+      "train_seed": 42,
+      "valid_seed": 1002,
+      "completion_rate": 0.3695652173913043,
+      "rejection_rate": 0.1956521739130435,
+      "throughput": 0.17,
+      "avg_latency": 44.88235294117647,
+      "sla_violation_rate": 0.6470588235294118
+    },
+    {
+      "train_seed": 42,
+      "valid_seed": 1003,
+      "completion_rate": 0.3695652173913043,
+      "rejection_rate": 0.1956521739130435,
+      "throughput": 0.17,
+      "avg_latency": 44.88235294117647,
+      "sla_violation_rate": 0.6470588235294118
+    },
+    {
+      "train_seed": 42,
+      "valid_seed": 1004,
+      "completion_rate": 0.3695652173913043,
+      "rejection_rate": 0.1956521739130435,
+      "throughput": 0.17,
+      "avg_latency": 44.88235294117647,
+      "sla_violation_rate": 0.6470588235294118
+    },
+    {
+      "train_seed": 42,
+      "valid_seed": 1005,
+      "completion_rate": 0.3695652173913043,
+      "rejection_rate": 0.1956521739130435,
+      "throughput": 0.17,
+      "avg_latency": 44.88235294117647,
+      "sla_violation_rate": 0.6470588235294118
+    }
+  ],
+  "101": [
+    {
+      "train_seed": 101,
+      "valid_seed": 1001,
+      "completion_rate": 0.32,
+      "rejection_rate": 0.2,
+      "throughput": 0.16,
+      "avg_latency": 58.0625,
+      "sla_violation_rate": 0.78125
+    },
+    {
+      "train_seed": 101,
+      "valid_seed": 1002,
+      "completion_rate": 0.32,
+      "rejection_rate": 0.2,
+      "throughput": 0.16,
+      "avg_latency": 58.0625,
+      "sla_violation_rate": 0.78125
+    },
+    {
+      "train_seed": 101,
+      "valid_seed": 1003,
+      "completion_rate": 0.32,
+      "rejection_rate": 0.2,
+      "throughput": 0.16,
+      "avg_latency": 58.0625,
+      "sla_violation_rate": 0.78125
+    },
+    {
+      "train_seed": 101,
+      "valid_seed": 1004,
+      "completion_rate": 0.32,
+      "rejection_rate": 0.2,
+      "throughput": 0.16,
+      "avg_latency": 58.0625,
+      "sla_violation_rate": 0.78125
+    },
+    {
+      "train_seed": 101,
+      "valid_seed": 1005,
+      "completion_rate": 0.32,
+      "rejection_rate": 0.2,
+      "throughput": 0.16,
+      "avg_latency": 58.0625,
+      "sla_violation_rate": 0.78125
+    }
+  ],
+  "202": [
+    {
+      "train_seed": 202,
+      "valid_seed": 1001,
+      "completion_rate": 0.3,
+      "rejection_rate": 0.2,
+      "throughput": 0.15,
+      "avg_latency": 53.166666666666664,
+      "sla_violation_rate": 0.7333333333333333
+    },
+    {
+      "train_seed": 202,
+      "valid_seed": 1002,
+      "completion_rate": 0.3,
+      "rejection_rate": 0.2,
+      "throughput": 0.15,
+      "avg_latency": 53.166666666666664,
+      "sla_violation_rate": 0.7333333333333333
+    },
+    {
+      "train_seed": 202,
+      "valid_seed": 1003,
+      "completion_rate": 0.3,
+      "rejection_rate": 0.2,
+      "throughput": 0.15,
+      "avg_latency": 53.166666666666664,
+      "sla_violation_rate": 0.7333333333333333
+    },
+    {
+      "train_seed": 202,
+      "valid_seed": 1004,
+      "completion_rate": 0.3,
+      "rejection_rate": 0.2,
+      "throughput": 0.15,
+      "avg_latency": 53.166666666666664,
+      "sla_violation_rate": 0.7333333333333333
+    },
+    {
+      "train_seed": 202,
+      "valid_seed": 1005,
+      "completion_rate": 0.3,
+      "rejection_rate": 0.2,
+      "throughput": 0.15,
+      "avg_latency": 53.166666666666664,
+      "sla_violation_rate": 0.7333333333333333
+    }
+  ]
+}

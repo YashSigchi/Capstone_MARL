@@ -1,0 +1,4 @@
+{
+  "status": "CONSISTENT",
+  "description": "The train.py and evaluate.py configs were successfully synchronized. Both now enforce a hard max_rejection_rate of 0.2 and target_rejection_rate of 0.1. Previous discrepancies were due to the trainer dynamically modifying in-memory config without committing to disk, leaving the evaluator unrestricted at 1.0."
+}

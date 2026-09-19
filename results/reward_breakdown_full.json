@@ -1,0 +1,65 @@
+{
+  "REJECT": {
+    "policy": "REJECT",
+    "episode_reward": -54.80000000000014,
+    "completed": 0,
+    "rejected": 80,
+    "unfinished": 20,
+    "components": {
+      "action_penalty": -11.999999999999973,
+      "admission": -1000.0,
+      "sla": -80.0,
+      "latency": 0.0,
+      "queue": -3.999999999999994,
+      "energy": 0.0,
+      "utilization": 0.0,
+      "load_balance": 0.0,
+      "throughput": 0.0
+    },
+    "defers": 3,
+    "allocs": 0,
+    "steps": 200
+  },
+  "DEFER": {
+    "policy": "DEFER",
+    "episode_reward": -18.86,
+    "completed": 0,
+    "rejected": 0,
+    "unfinished": 100,
+    "components": {
+      "action_penalty": -200.0,
+      "admission": 0.0,
+      "sla": 0.0,
+      "latency": 0.0,
+      "queue": -177.2,
+      "energy": 0.0,
+      "utilization": 0.0,
+      "load_balance": 0.0,
+      "throughput": 0.0
+    },
+    "defers": 200,
+    "allocs": 0,
+    "steps": 200
+  },
+  "FCFS": {
+    "policy": "FCFS",
+    "episode_reward": -12.825679291437034,
+    "completed": 14,
+    "rejected": 0,
+    "unfinished": 82,
+    "components": {
+      "action_penalty": -18.19999999999999,
+      "admission": 0.0,
+      "sla": -20.982632727474382,
+      "latency": -37.78594125949533,
+      "queue": -169.95,
+      "energy": -17.07413285796692,
+      "utilization": 59.65328078129464,
+      "load_balance": -64.51334112157821,
+      "throughput": 19.885156049126675
+    },
+    "defers": 182,
+    "allocs": 18,
+    "steps": 200
+  }
+}

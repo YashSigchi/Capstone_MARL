@@ -1,0 +1,40 @@
+{
+  "training_episode": 150,
+  "validation_seeds": [
+    1001,
+    1002,
+    1003,
+    1004,
+    1005
+  ],
+  "selection_score": [
+    0.268,
+    -0.188,
+    -0.732,
+    0.0,
+    -0.0,
+    -9112.7
+  ],
+  "metrics": {
+    "eval_reward": -0.19308541250841094,
+    "task_completion_rate": 0.267792338233389,
+    "sla_violation_rate": 0.7322403963497932,
+    "latency": 0.0,
+    "energy_per_completed_task": 9112.650800172552,
+    "rejected_tasks": 18.8,
+    "completed_tasks": 24.8,
+    "unfinished_tasks": 48.6
+  },
+  "metadata": {
+    "episode": 150,
+    "training_seed": "unknown",
+    "rejection_enabled": true,
+    "max_rejection_rate": 0.2,
+    "target_rejection_rate": 0.0,
+    "validation_completion_rate": 0.267792338233389,
+    "validation_rejection_rate": 18.8,
+    "validation_sla_violation_rate": 0.7322403963497932,
+    "validation_latency": 0.0,
+    "validation_energy_per_completed_task": 9112.650800172552
+  }
+}

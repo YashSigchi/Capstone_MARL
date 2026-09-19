@@ -21,7 +21,7 @@ dqn:
 dynamic_rewards: false
 environment_config: environment.yaml
 eval_episodes: 10
-eval_interval: 10
+eval_interval: 50
 experiment_name: marl_resource_allocation
 log_dir: logs/
 marl_config: marl.yaml

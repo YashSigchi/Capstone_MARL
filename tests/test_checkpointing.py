@@ -24,7 +24,7 @@ class DummyAlgorithm:
     def update(self, buffer):
         return {'policy_loss': 0.0, 'value_loss': 0.0}
         
-    def save(self, path):
+    def save(self, path, metadata=None):
         with open(path, 'w') as f:
             f.write("dummy_model")
             

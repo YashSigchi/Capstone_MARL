@@ -6,7 +6,7 @@ import numpy as np
 
 EXP_DIR = 'experiments'
 seeds = [42, 101, 202]
-test_seeds = [301, 302, 303]
+test_seeds = [1111, 2222, 3333, 4444, 5555, 6666, 7777, 8888, 9999, 10000]
 
 mappo_results = []
 baseline_results = {

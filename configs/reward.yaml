@@ -1,73 +1,52 @@
-# =============================================================================
-# Reward Configuration
-# =============================================================================
-# Multi-objective reward with 7 components.
-# R_total = alpha * R_local + (1 - alpha) * R_global
-# where R_local = sum(w_i * norm(R_i)) for local-scope components
-#   and R_global = sum(w_i * norm(R_i)) for global-scope components
-# =============================================================================
-
-# --- Reward Blending ---
-# alpha=1.0: fully local, alpha=0.0: fully global
-reward_blend_alpha: 0.5
-
-# --- Component Weights ---
-# Must sum to 1.0. These weights are applied within their scope group
-# after normalization.
-weights:
-  action_penalty: 0.20
-  latency: 0.15           # [LOCAL] penalize high completion time
-  energy: 0.15            # [LOCAL] penalize energy consumption
-  utilization: 0.15       # [GLOBAL] reward efficient utilization
-  load_balance: 0.10      # [GLOBAL] penalize resource imbalance
-  sla: 0.10               # [LOCAL] penalize SLA violations
-  queue: 0.10             # [LOCAL] penalize queue waiting time
-  throughput: 0.05        # [GLOBAL] reward completed tasks
-
-# --- Normalization ---
-# Method applied per-component before weighting.
-# Options: none, min_max, running_mean_std, fixed_range
-normalization: none
-
-# --- Invalid Action ---
-# Penalty applied when an agent selects an invalid action
-# (should be prevented by action masking, but as a safety net).
-invalid_action_penalty: -1.0
-
-# --- Dynamic Weight Adaptation ---
-# Status: Experimental
+reward:
+  admission:
+    target_rejection_rate: 0.20
+    base_penalty: 5.0
+    excess_penalty_scale: 10.0
 dynamic_weights:
-  mode: fixed              # fixed | dynamic
-  # Per-component min/max bounds.
-  # Ensures critical objectives cannot be effectively disabled.
-  # Constraint: w_i >= 0, sum(w_i) = 1, min <= w_i <= max
   constraints:
     action_penalty:
+      max: 0.5
       min: 0.0
-      max: 1.0
-    latency:
-      min: 0.05
-      max: 0.40
+    admission:
+      max: 0.5
+      min: 0.0
     energy:
+      max: 0.3
       min: 0.0
-      max: 0.30
-    utilization:
-      min: 0.0
-      max: 0.30
+    latency:
+      max: 0.4
+      min: 0.05
     load_balance:
-      min: 0.0
       max: 0.25
-    sla:
-      min: 0.10
-      max: 0.50
+      min: 0.0
     queue:
-      min: 0.0
       max: 0.25
-    throughput:
       min: 0.0
-      max: 0.20
-  # Thresholds for dynamic adjustments (only used when mode=dynamic)
+    sla:
+      max: 0.5
+      min: 0.1
+    throughput:
+      max: 0.2
+      min: 0.0
+    utilization:
+      max: 0.3
+      min: 0.0
   dynamic_thresholds:
-    high_utilization: 0.85
-    high_sla_violation_rate: 0.1
     high_energy_ratio: 0.8
+    high_sla_violation_rate: 0.1
+    high_utilization: 0.85
+  mode: fixed
+invalid_action_penalty: -1.0
+normalization: none
+reward_blend_alpha: 0.5
+weights:
+  action_penalty: 0.1
+  admission: 0.1
+  energy: 0.15
+  latency: 0.15
+  load_balance: 0.1
+  queue: 0.1
+  sla: 0.1
+  throughput: 0.05
+  utilization: 0.15

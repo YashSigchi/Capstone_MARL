@@ -51,8 +51,8 @@ class MAPPO(BaseMARLAlgorithm):
         self.critic_optimizer = None
 
     def setup(self, env_config: dict, algorithm_config: dict) -> None:
-        actor_config = self.config.get('actor_config', {})
-        critic_config = self.config.get('critic_config', {})
+        actor_config = self.config.get('actor', self.config.get('actor_config', {}))
+        critic_config = self.config.get('critic', self.config.get('critic_config', {}))
         
         self.critic = CentralizedCritic(
             state_dim=self.global_state_dim,
@@ -219,14 +219,17 @@ class MAPPO(BaseMARLAlgorithm):
                 
         return {k: np.mean(v) for k, v in metrics.items()}
 
-    def save(self, path: str) -> None:
+    def save(self, path: str, metadata: dict = None) -> None:
         state = {
             'critic': self.critic.state_dict(),
             'critic_optimizer': self.critic_optimizer.state_dict(),
             'actors': [a.state_dict() for a in self.actors],
             'actor_optimizers': [o.state_dict() for o in self.actor_optimizers],
-            'config': self.config
         }
+        if hasattr(self, 'normalizer'):
+            state['normalizer'] = self.normalizer.state_dict()
+        if metadata:
+            state['metadata'] = metadata
         torch.save(state, path)
 
     def load(self, path: str) -> None:
@@ -237,3 +240,16 @@ class MAPPO(BaseMARLAlgorithm):
             a.load_state_dict(s)
         for o, s in zip(self.actor_optimizers, state['actor_optimizers']):
             o.load_state_dict(s)
+        if 'normalizer' in state and hasattr(self, 'normalizer'):
+            self.normalizer.load_state_dict(state['normalizer'])
+            
+        metadata = state.get('metadata')
+        if metadata:
+            print(f"\n--- Loading checkpoint from {path} ---")
+            print(f"episode = {metadata.get('episode', 'unknown')}")
+            print(f"training_seed = {metadata.get('training_seed', 'unknown')}")
+            print(f"max_rejection_rate = {metadata.get('max_rejection_rate', 'unknown')}")
+            print(f"target_rejection_rate = {metadata.get('target_rejection_rate', 'unknown')}")
+            print(f"validation_completion = {metadata.get('validation_completion_rate', 'unknown')}")
+            print(f"validation_rejection = {metadata.get('validation_rejection_rate', 'unknown')}")
+            print("---------------------------------------\n")

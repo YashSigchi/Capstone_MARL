@@ -174,6 +174,12 @@ class MARLResourceAllocationEnv:
         self._completed_tasks: List[TaskRepresentation] = []
         self._rejected_tasks: List[TaskRepresentation] = []
         self._all_tasks: List[TaskRepresentation] = []
+        
+        # ---- Rejection Control -----------------------------------------
+        rej_cfg = config.get("rejection", {})
+        self._rejection_enabled = rej_cfg.get("enabled", True)
+        self._max_rejection_rate = rej_cfg.get("max_rejection_rate", 1.0)
+        self._rejected_task_records = []
 
         # ---- Track per-step info for reward computation ----------------
         self._step_info: Dict[int, dict] = {}
@@ -242,6 +248,7 @@ class MARLResourceAllocationEnv:
         self._completed_tasks = []
         self._rejected_tasks = []
         self._all_tasks = []
+        self._rejected_task_records = []
         self._step_info = {}
         self._total_energy = 0.0
         self._total_carbon = 0.0
@@ -355,6 +362,13 @@ class MARLResourceAllocationEnv:
                 len(self._completed_tasks) + len(self._rejected_tasks)
             )
             
+            info["current_rejection_rate"] = len(self._rejected_tasks) / max(1, self._task_counter)
+            info["max_rejection_rate"] = getattr(self, "_max_rejection_rate", 1.0)
+            info["target_rejection_rate"] = self.config.get("reward", {}).get("admission", {}).get("target_rejection_rate", 0.0)
+            info["admission_base_penalty"] = self.config.get("reward", {}).get("admission", {}).get("base_penalty", 5.0)
+            info["admission_excess_penalty_scale"] = self.config.get("reward", {}).get("admission", {}).get("excess_penalty_scale", 10.0)
+            info["rejection_enabled"] = getattr(self, "_rejection_enabled", True)
+            
             # True makespan semantics: if there are unfinished tasks, the true makespan 
             # is at least the current step. If all are done, it's the exact time the last task finished.
             unfinished = sum(q.length for q in self.queues.values()) + len(self._running_tasks)
@@ -397,7 +411,7 @@ class MARLResourceAllocationEnv:
         """Build the local observation vector for one agent.
 
         Components (normalised where practical):
-            - Per-resource in cluster: utilisation, available CPU/mem/GPU
+            - Per-resource in cluster: utilisation, available CPU/mem/GPU, est exec time
               (flattened, zero-padded to max cluster size)
             - Queue length (normalised by 20)
             - Average waiting time (normalised by 50)
@@ -405,22 +419,30 @@ class MARLResourceAllocationEnv:
         """
         cluster = self._get_cluster(agent_id)
         resources = cluster.get_resources(self.resources)
+        task = self.get_current_task(agent_id)
 
         obs_parts: List[float] = []
 
-        # Per-resource features (4 per resource)
+        # Per-resource features (5 per resource)
         max_resources = max(c.num_resources for c in self.clusters.values())
         for i in range(max_resources):
             if i < len(resources):
                 r = resources[i]
+                
+                # Compute estimated execution time if task is present and feasible
+                est_time = 0.0
+                if task is not None and r.can_execute(task):
+                    est_time = self.execution_model.compute_execution_time(task, r) / 100.0
+                
                 obs_parts.extend([
                     r.utilization(),
                     r.available_cpu() / max(r.cpu_capacity, 1.0),
                     r.available_memory() / max(r.memory_capacity, 1.0),
                     r.available_gpu() / max(r.gpu_capacity, 1.0) if r.gpu_capacity > 0 else 0.0,
+                    est_time
                 ])
             else:
-                obs_parts.extend([0.0, 0.0, 0.0, 0.0])
+                obs_parts.extend([0.0, 0.0, 0.0, 0.0, 0.0])
 
         # Queue info
         queue = self.queues[agent_id]
@@ -428,8 +450,8 @@ class MARLResourceAllocationEnv:
         obs_parts.append(queue.average_waiting_time(float(self._current_step)) / 50.0)
 
         # Current task features
-        task = self.get_current_task(agent_id)
         if task is not None:
+            slack = task.deadline - float(self._current_step)
             obs_parts.extend([
                 task.cpu_req / 64.0,
                 task.memory_req / 128.0,
@@ -439,10 +461,11 @@ class MARLResourceAllocationEnv:
                 task.priority / 5.0,
                 task.data_size / 100.0,
                 task.get_waiting_time(float(self._current_step)) / 50.0,
+                slack / 50.0, # current slack
                 1.0,  # has_task flag
             ])
         else:
-            obs_parts.extend([0.0] * 9)
+            obs_parts.extend([0.0] * 10)
 
         return np.array(obs_parts, dtype=np.float32)
 
@@ -509,9 +532,22 @@ class MARLResourceAllocationEnv:
             for i, r in enumerate(resources):
                 if r.can_execute(task):
                     mask[i] = 1.0
-        # Defer and reject are always valid
+                    
+        # DEFER is always valid
         mask[-2] = 1.0
-        mask[-1] = 1.0
+        
+        # Enforce rejection control
+        if not getattr(self, "_rejection_enabled", True):
+            mask[-1] = 0.0
+        else:
+            total_arrived = max(1, self._task_counter)
+            current_rej_rate = len(self._rejected_tasks) / total_arrived
+            max_rate = getattr(self, "_max_rejection_rate", 1.0)
+            if current_rej_rate >= max_rate:
+                mask[-1] = 0.0
+            else:
+                mask[-1] = 1.0
+                
         return mask
 
     # ------------------------------------------------------------------ #
@@ -557,9 +593,9 @@ class MARLResourceAllocationEnv:
         """Compute observation dimension (cached)."""
         if self._obs_dim is None:
             max_resources = max(c.num_resources for c in self.clusters.values())
-            resource_features = max_resources * 4
+            resource_features = max_resources * 5  # added est exec time
             queue_features = 2
-            task_features = 9
+            task_features = 10                     # added slack
             self._obs_dim = resource_features + queue_features + task_features
         return self._obs_dim
 
@@ -598,6 +634,14 @@ class MARLResourceAllocationEnv:
         """Return the reject action index for the agent."""
         cluster = self._get_cluster(agent_id)
         return cluster.num_resources + 1
+
+    def save_rejection_analysis(self, filepath: str) -> None:
+        import json
+        with open(filepath, 'w') as f:
+            json.dump(self._rejected_task_records, f, indent=2)
+
+    def close(self) -> None:
+        pass
 
     def _generate_and_distribute_tasks(self) -> None:
         """Generate arriving tasks and distribute to agent queues."""
@@ -667,6 +711,9 @@ class MARLResourceAllocationEnv:
             "local_resources": resources,
         }
 
+        feasible_resources = [r for r in resources if r.can_execute(task)] if task else []
+        info["feasible_count"] = len(feasible_resources)
+
         if task is None or action == defer_action:
             # No task or agent chose to defer
             self._step_info[agent_id] = info
@@ -677,6 +724,29 @@ class MARLResourceAllocationEnv:
             task = self.queues[agent_id].dequeue()
             task.status = "rejected"
             self._rejected_tasks.append(task)
+            
+            # Record detailed context for rejection analysis
+            feasible_resources = [r for r in resources if r.can_execute(task)]
+            feasible_count = len(feasible_resources)
+            if feasible_count > 0:
+                min_exec = min(self.execution_model.compute_execution_time(task, r) for r in feasible_resources)
+            else:
+                min_exec = -1.0
+                
+            self._rejected_task_records.append({
+                "task_id": task.task_id,
+                "work_units": getattr(task, "work_units", 0.0),
+                "cpu_req": task.cpu_req,
+                "memory_req": task.memory_req,
+                "gpu_req": task.gpu_req,
+                "deadline": getattr(task, "deadline", 0.0),
+                "priority": task.priority,
+                "feasible_resource_count": feasible_count,
+                "min_exec_time": min_exec,
+                "current_step": self._current_step,
+                "queue_length": self.queues[agent_id].length
+            })
+
             info["action_was_defer"] = False
             info["action_was_reject"] = True
             info["allocated_task"] = task
@@ -792,6 +862,9 @@ class MARLResourceAllocationEnv:
             "total_tasks_processed": (
                 len(self._completed_tasks) + len(self._rejected_tasks)
             ),
+            "current_rejection_rate": len(self._rejected_tasks) / max(1, self._task_counter) if getattr(self, "_task_counter", 0) > 0 else 0.0,
+            "max_rejection_rate": getattr(self, "_max_rejection_rate", 1.0),
+            "rejection_enabled": getattr(self, "_rejection_enabled", True),
             "makespan": getattr(self, "_makespan", 0.0) if (sum(q.length for q in self.queues.values()) + len(self._running_tasks)) == 0 else float(self._current_step),
             "unfinished_tasks": sum(q.length for q in self.queues.values()) + len(self._running_tasks)
         }

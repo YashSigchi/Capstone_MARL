@@ -121,9 +121,14 @@ class Evaluator:
 
             # Utilization — all_utilizations is a list of per-resource utils
             all_utils = ri.get('all_utilizations', [])
+            all_resources = ri.get('all_resources', [])
             if all_utils and not step_utilization:
                 # Only capture once per step (same across agents)
                 step_utilization = [float(u) for u in all_utils]
+                # Also capture individual dimensions if available
+                if all_resources:
+                    step_cpu_utilization = [r.current_cpu_usage / max(r.cpu_capacity, 1e-6) for r in all_resources]
+                    step_memory_utilization = [r.current_memory_usage / max(r.memory_capacity, 1e-6) for r in all_resources]
 
             # Energy & carbon
             step_energy += ri.get('energy_consumed', 0.0)
@@ -137,6 +142,8 @@ class Evaluator:
             result['queue_wait'] = step_queue_waits
         if step_utilization:
             result['utilization'] = step_utilization
+            result['cpu_utilization'] = step_cpu_utilization
+            result['memory_utilization'] = step_memory_utilization
 
         result['energy'] = step_energy
         result['carbon'] = step_carbon

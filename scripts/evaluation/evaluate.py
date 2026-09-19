@@ -57,7 +57,19 @@ def main():
     
     config = load_configs(args.config)
     set_all_seeds(args.seed)
+
+
+    # PRINT RESOLVED CONFIGURATIONS (PHASE B)
+    # ---------------------------------------------------------
+    print("\n" + "="*50)
+    from marl.utils.config import print_resolved_config
+    print_resolved_config(config, title="FINAL RESOLVED EVALUATION CONFIGURATION")
     
+    # Save resolved config for Phase B checks
+    os.makedirs('results', exist_ok=True)
+    with open('results/eval_resolved_config.yaml', 'w') as f:
+        yaml.dump(config, f)
+        
     env = MARLResourceAllocationEnv(config)
     
     # Mock spaces if needed by anything (not strictly needed for pure eval if we just use get_obs_dim)
@@ -72,6 +84,23 @@ def main():
     
     print(f"Loading checkpoint from {args.checkpoint}...")
     algorithm.load(args.checkpoint)
+    
+    # ---------------------------------------------------------
+    # VALIDATE CHECKPOINT METADATA AGAINST EVAL CONFIG
+    # ---------------------------------------------------------
+    import torch
+    state = torch.load(args.checkpoint, map_location='cpu')
+    metadata = state.get('metadata', {})
+    if metadata:
+        ckpt_tr = metadata.get('target_rejection_rate')
+        adm_cfg = config.get('reward', {}).get('admission', {})
+        if not adm_cfg: adm_cfg = config.get('admission', {})
+        eval_tr = adm_cfg.get('target_rejection_rate', 0.0)
+        
+        if ckpt_tr is not None and eval_tr is not None:
+            if abs(ckpt_tr - eval_tr) > 1e-5:
+                raise ValueError(f"Configuration mismatch error: Checkpoint was trained with target_rejection_rate={ckpt_tr} but evaluation config has {eval_tr}.")
+
     
     evaluator = Evaluator(env=env, reward_engine=RewardEngine(config), seed=args.seed)
     

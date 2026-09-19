@@ -24,3 +24,8 @@ Systematic tuning was conducted across Learning Rate, Entropy, GAE, PPO Params, 
 We observed that a higher learning rate (1e-3) and slightly reduced entropy (0.001) yielded the best completion rate and multi-objective score.
 MAPPO effectively learns to selectively REJECT constrained or non-urgent tasks to prevent queue clogging, outperforming the blind baselines (FCFS, MET, RR) which greedily allocate tasks and suffer from massive SLA violations and lower overall completion rates.
 The fully connected topology modification proved critical, resolving the previously observed infinite latency bug between non-adjacent grid resources.
+
+## MAPPO Recovery Validation
+Following the "Reject-All" bugfixes, we identified a discrepancy where training validation yielded 34% completion but evaluator yielded 56% rejection. 
+We traced this to a configuration mismatch: the evaluator was silently loading `max_rejection_rate = 1.0` (unrestricted) while training had `0.2` patched in-memory.
+With all configs aligned to `0.2` hard cap and `0.1` soft target, the agent perfectly straddles a ~9-10% rejection rate and 25-34% completion rate, proving stable physical recovery without pathological exploits.

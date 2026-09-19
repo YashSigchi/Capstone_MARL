@@ -170,3 +170,10 @@ Separating configs by concern allows independent modification.
 **Status:** Implemented.
 
 **Future:** May migrate to Hydra for more complex experiment sweeps.
+
+## Checkpoint & Configuration Lifecycle (Phase A-C, L)
+- **Decision:** Checkpoints must encapsulate their generating configuration (`metadata.json`).
+- **Rationale:** Prevents testing "stale" or structurally misaligned models.
+- **Decision:** Physical configuration YAML files act as the ultimate ground-truth (no silent in-memory patching of core metrics like `max_rejection_rate`).
+- **Rationale:** Ensures training validation and standalone evaluation paths execute identical logic.
+

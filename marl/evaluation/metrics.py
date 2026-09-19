@@ -42,6 +42,8 @@ class MetricsTracker:
         self._current_latencies: List[float] = []
         self._current_queue_waits: List[float] = []
         self._current_utilizations: List[List[float]] = []
+        self._current_cpu_utilizations: List[List[float]] = []
+        self._current_memory_utilizations: List[List[float]] = []
         self._current_energy: float = 0.0
         self._current_carbon: float = 0.0
         self._current_reward: float = 0.0
@@ -60,6 +62,10 @@ class MetricsTracker:
             self._current_queue_waits.extend(step_info['queue_wait'])
         if 'utilization' in step_info:
             self._current_utilizations.append(step_info['utilization'])
+        if 'cpu_utilization' in step_info:
+            self._current_cpu_utilizations.append(step_info['cpu_utilization'])
+        if 'memory_utilization' in step_info:
+            self._current_memory_utilizations.append(step_info['memory_utilization'])
         
         self._current_energy += step_info.get('energy', 0.0)
         self._current_carbon += step_info.get('carbon', 0.0)
@@ -93,10 +99,13 @@ class MetricsTracker:
             
         if self._current_utilizations:
             utils = np.array(self._current_utilizations)
-            metrics.avg_cpu_utilization = float(np.mean(utils))
-            # simplified for now, assuming scalar util, can be expanded
-            metrics.avg_memory_utilization = float(np.mean(utils))
             metrics.resource_imbalance = float(np.std(utils))
+        if self._current_cpu_utilizations:
+            cpu_utils = np.array(self._current_cpu_utilizations)
+            metrics.avg_cpu_utilization = float(np.mean(cpu_utils))
+        if self._current_memory_utilizations:
+            mem_utils = np.array(self._current_memory_utilizations)
+            metrics.avg_memory_utilization = float(np.mean(mem_utils))
             
         metrics.total_energy = self._current_energy
         metrics.total_carbon = self._current_carbon
@@ -112,6 +121,8 @@ class MetricsTracker:
         self._current_latencies.clear()
         self._current_queue_waits.clear()
         self._current_utilizations.clear()
+        self._current_cpu_utilizations.clear()
+        self._current_memory_utilizations.clear()
         self._current_energy = 0.0
         self._current_carbon = 0.0
         self._current_reward = 0.0

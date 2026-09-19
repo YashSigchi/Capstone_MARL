@@ -14,6 +14,8 @@ def compute_latency_reward(env_info: Dict[str, Any]) -> float:
     task = env_info.get('allocated_task')
     if not task:
         return 0.0
+    if getattr(task, 'status', '') == 'rejected':
+        return 0.0
         
     total_completion_time = env_info.get('total_completion_time', 0.0)
     deadline = getattr(task, 'deadline', 1.0) # avoid div by zero, default to 1.0
@@ -30,8 +32,12 @@ def compute_energy_reward(env_info: Dict[str, Any]) -> float:
     Penalizes energy consumption.
     [LOCAL]
     """
+    task = env_info.get('allocated_task')
+    if not task or getattr(task, 'status', '') == 'rejected':
+        return 0.0
+        
     energy_consumed = env_info.get('energy_consumed', 0.0)
-    max_energy_scale = 1000.0
+    max_energy_scale = 10000.0
     return -(energy_consumed / max_energy_scale)
 
 def compute_utilization_reward(env_info: Dict[str, Any]) -> float:
@@ -62,9 +68,15 @@ def compute_load_balance_reward(env_info: Dict[str, Any]) -> float:
 
 def compute_sla_reward(env_info: Dict[str, Any]) -> float:
     """
-    Strong penalty for SLA violations, priority-weighted.
+    Rewards for satisfying SLA (slack > 0), penalizes violations.
     [LOCAL]
     """
+    task = env_info.get('allocated_task')
+    if not task:
+        return 0.0
+    if getattr(task, 'status', '') == 'rejected':
+        return -1.0 # Rejection is an implicit SLA violation
+        
     task_priority = env_info.get('task_priority', 1)
     sla_penalty_scale = 0.5
     
@@ -72,7 +84,6 @@ def compute_sla_reward(env_info: Dict[str, Any]) -> float:
         return -float(task_priority) * sla_penalty_scale
     else:
         slack = env_info.get('sla_slack', 0.0)
-        task = env_info.get('allocated_task')
         deadline = getattr(task, 'deadline', 1.0) if task else 1.0
         if deadline == 0:
             deadline = 1e-5
@@ -100,17 +111,44 @@ def compute_throughput_reward(env_info: Dict[str, Any]) -> float:
 
 
 
-def compute_action_penalty(env_info: dict) -> float:
+def compute_action_penalty(env_info: Dict[str, Any]) -> float:
     """
-    Applies explicit penalties for agent's local scheduling actions (DEFER/REJECT).
+    Penalizes invalid actions and unnecessary deferrals.
     [LOCAL]
     """
-    if env_info.get('action_was_reject', False):
-        return -1.0
+    if env_info.get('invalid_action', False):
+        # The dynamic penalty is handled globally in compute_admission_reward.
+        return -0.1
     if env_info.get('action_was_defer', False):
+        if env_info.get('feasible_count', 0) > 0:
+            return -1.0 # Heavy penalty for deferring when you could have allocated
         return -0.1
     return 0.0
 
+def compute_admission_reward(env_info: Dict[str, Any]) -> float:
+    """
+    Dynamic rejection penalty based on excess rejection.
+    [GLOBAL]
+    """
+    if not env_info.get("rejection_enabled", True):
+        return 0.0
+        
+    current_rate = env_info.get("current_rejection_rate", 0.0)
+    target_rate = env_info.get("target_rejection_rate", 0.0)
+    
+    # Calculate excess rejection beyond the allowed target
+    excess = max(0.0, current_rate - target_rate)
+    
+    # Base global penalty for any rejection activity to discourage random dropping
+    base_pen_scale = env_info.get("admission_base_penalty", 5.0)
+    base_penalty = base_pen_scale * current_rate 
+    
+    # Exponential/linear scaling for excess to strictly enforce quota
+    excess_pen_scale = env_info.get("admission_excess_penalty_scale", 10.0)
+    excess_penalty = excess_pen_scale * excess
+    
+    reward = -(base_penalty + excess_penalty)
+    return max(-5.0, min(0.0, reward))
 
 REWARD_COMPONENTS = {
     'action_penalty': {'fn': compute_action_penalty, 'scope': 'local'},
@@ -121,4 +159,5 @@ REWARD_COMPONENTS = {
     'sla': {'fn': compute_sla_reward, 'scope': 'local'},
     'queue': {'fn': compute_queue_reward, 'scope': 'local'},
     'throughput': {'fn': compute_throughput_reward, 'scope': 'global'},
+    'admission': {'fn': compute_admission_reward, 'scope': 'global'},
 }

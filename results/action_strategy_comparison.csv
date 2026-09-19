@@ -1,0 +1,4 @@
+policy,reward,completed,rejected,unfinished
+REJECT,-54.80000000000014,0,80,20
+DEFER,-18.86,0,0,100
+FCFS,-12.825679291437034,14,0,82
