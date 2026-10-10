@@ -8,3 +8,5 @@ python scripts/evaluation/evaluate.py --config configs/experiment.yaml --checkpo
 python scripts/evaluation/run_baselines.py --config configs/experiment.yaml      
 
 python scripts/analysis/print_table.py
+
+updated file
