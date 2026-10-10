@@ -46,7 +46,7 @@ for t_seed in test_seeds:
     subprocess.run(cmd, check=True, stdout=subprocess.DEVNULL)
     
     import pandas as pd
-    df = pd.read_csv('baseline_comparison.csv', index_col=0)
+    df = pd.read_csv('results/processed/baseline_comparison.csv', index_col=0)
     for b in ['fcfs', 'met', 'round_robin']:
         if b in df.index:
             baseline_results[b].append({

@@ -1,9 +1,55 @@
+# =============================================================================
+# MARL Resource Allocation - .gitignore
+# Rule of thumb: ignore anything large or regenerable (weights, caches, run
+# output); keep small research evidence (CSV/JSON/YAML/PNG, curated logs).
+# =============================================================================
+
+# --- Python -----------------------------------------------------------------
 __pycache__/
 *.py[cod]
 *$py.class
 *.egg-info/
+.eggs/
+build/
+dist/
+
+# --- Testing / tooling caches ----------------------------------------------
 .pytest_cache/
 .coverage
 htmlcov/
-dist/
-build/
+.mypy_cache/
+.ruff_cache/
+
+# --- Virtual environments / secrets ----------------------------------------
+.venv/
+venv/
+env/
+.env
+
+# --- OS / editor / notebooks -----------------------------------------------
+.DS_Store
+.idea/
+.vscode/
+*.swp
+.ipynb_checkpoints/
+
+# --- Model weights & checkpoints (large, regenerable via train.py) ---------
+# Applies everywhere: checkpoints/, results/*/, experiments/checkpoints/ ...
+*.pt
+*.pth
+*.ckpt
+checkpoints/
+checkpoints_test/
+
+# --- Per-run generated output ----------------------------------------------
+# Logger output written by ExperimentLogger on every training run
+logs/marl_resource_allocation/
+# Stray logs dropped in the repo root (curated ones live in logs/runs/)
+/*.log
+# Resolved configs are rewritten on every train/eval run
+results/resolved_config.yaml
+results/eval_resolved_config.yaml
+# TensorBoard / experiment trackers
+/tensorboard/
+/runs/
+/wandb/

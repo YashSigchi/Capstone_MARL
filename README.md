@@ -159,22 +159,38 @@ Full reproducibility is enforced via `marl/utils/seeding.py` which seeds Python'
 The teammate's Graph Neural Network encoder output can be injected via `marl/adapters/gnn_adapter.py`. Tasks have a reserved `embedding_slot` for the latent vector representation.
 
 ## 23. Project Structure
+See [`run.md`](run.md) for how to run, test and demo each piece.
 ```text
 marl-resource-allocation/
-├── configs/               # YAML configuration files
+├── README.md  run.md  CHANGELOG.md
+├── setup.py  requirements.txt  pytest.ini
+├── configs/               # YAML configuration files (environment, marl, reward, experiment)
 ├── marl/
 │   ├── adapters/          # GNN and Workload interfaces
 │   ├── algorithms/        # MAPPO implementation
-│   ├── baselines/         # Heuristic schedulers
+│   ├── agents/            # Actor / centralized critic
+│   ├── baselines/         # Heuristic schedulers (FCFS, RR, MET, Random)
 │   ├── communication/     # Inter-agent messaging
 │   ├── environment/       # Resources, clusters, execution models
-│   ├── evaluation/        # Metrics and test suites
+│   ├── evaluation/        # Metrics and evaluator
 │   ├── prediction/        # Matrix-V placeholder
 │   ├── reward/            # Reward engine
-│   └── utils/             # Loggers, checkpointing, seeding
-├── scripts/               # Train, Evaluate runners
-├── tests/                 # Invariant testing
-└── requirements.txt
+│   ├── training/          # Trainer, rollout buffer
+│   └── utils/             # Loggers, checkpointing, seeding, config printing
+├── scripts/
+│   ├── training/          # train.py, train_parallel.py
+│   ├── evaluation/        # evaluate.py, run_baselines.py, final tests
+│   ├── analysis/          # tables and plots
+│   ├── tuning/            # ablation and hyper-parameter sweeps
+│   ├── diagnostics/       # audits and debugging helpers
+│   └── experiments/       # shell orchestration
+├── tests/                 # pytest suite (invariants, rewards, metadata, ...)
+├── docs/                  # UNDERSTAND (presentation guide), ARCHITECTURE, DECISIONS, REQUIREMENTS, RESEARCH_NOTES
+├── results/               # processed/ (canonical), archive/, raw experiment output
+├── plots/                 # training curve, rejection trade-off
+├── logs/runs/             # curated stdout logs
+├── experiments/           # tuning configs / logs / plots
+└── checkpoints/           # model weights (git-ignored)
 ```
 
 ## 24. Component Status

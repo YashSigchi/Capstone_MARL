@@ -72,7 +72,11 @@ else:
     print("No final results to write.")
 
 # Plotting Training Curves
+# NOTE: Trainer does not persist history.json. If none is found, skip plotting so we
+# never overwrite plots/training_curve.png with an empty chart. To build the curve from
+# a training stdout log use: python scripts/analysis/plot_training_curve.py
 plt.figure(figsize=(10, 6))
+plotted = False
 for s in seeds:
     history_file = f'results/final_run_seed{s}/history.json'
     if os.path.exists(history_file):
@@ -82,12 +86,17 @@ for s in seeds:
                 # Smooth the curve
                 rew = pd.Series(h['episode_reward']).rolling(10).mean()
                 plt.plot(rew, label=f'Seed {s}')
+                plotted = True
 
-plt.title('MAPPO Training Curve (Top Config)')
-plt.xlabel('Episode')
-plt.ylabel('Episode Reward (Smoothed)')
-plt.legend()
-plt.tight_layout()
-plt.savefig('plots/training_curve.png')
-print("Saved plots/training_curve.png")
+if plotted:
+    plt.title('MAPPO Training Curve (Top Config)')
+    plt.xlabel('Episode')
+    plt.ylabel('Episode Reward (Smoothed)')
+    plt.legend()
+    plt.tight_layout()
+    plt.savefig('plots/training_curve.png')
+    print("Saved plots/training_curve.png")
+else:
+    print("No history.json found; skipped training curve "
+          "(use scripts/analysis/plot_training_curve.py).")
 

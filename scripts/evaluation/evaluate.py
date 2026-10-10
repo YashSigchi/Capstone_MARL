@@ -50,7 +50,7 @@ def main():
     parser.add_argument("--checkpoint", type=str, required=True, help="Path to model checkpoint")
     parser.add_argument("--episodes", type=int, default=10, help="Number of evaluation episodes")
     parser.add_argument("--seed", type=int, default=42, help="Random seed")
-    parser.add_argument("--output", type=str, default="eval_results.json", help="Path to save results JSON")
+    parser.add_argument("--output", type=str, default="results/processed/eval_results.json", help="Path to save results JSON")
     parser.add_argument("--deterministic", action="store_true", default=True, help="Use deterministic actions")
     
     args = parser.parse_args()
@@ -118,6 +118,7 @@ def main():
     metrics_series = pd.Series(metrics)
     print(metrics_series.to_string())
     
+    os.makedirs(os.path.dirname(os.path.abspath(args.output)), exist_ok=True)
     with open(args.output, 'w') as f:
         json.dump(metrics, f, indent=4)
     print(f"\nResults saved to {args.output}")

@@ -61,7 +61,7 @@ def main():
     parser.add_argument("--baselines", nargs='+', default=list(BASELINE_MAP.keys()), help="List of baselines to run")
     parser.add_argument("--episodes", type=int, default=10, help="Number of evaluation episodes per baseline")
     parser.add_argument("--seed", type=int, default=42, help="Random seed")
-    parser.add_argument("--output", type=str, default="baseline_comparison.csv", help="Path to save comparison CSV")
+    parser.add_argument("--output", type=str, default="results/processed/baseline_comparison.csv", help="Path to save comparison CSV")
     
     args = parser.parse_args()
     
@@ -96,6 +96,7 @@ def main():
     print("\n=== Baseline Comparison ===")
     print(comparison_df.to_string())
     
+    os.makedirs(os.path.dirname(os.path.abspath(args.output)), exist_ok=True)
     comparison_df.to_csv(args.output)
     print(f"\nComparison saved to {args.output}")
 
